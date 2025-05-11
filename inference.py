@@ -1,11 +1,18 @@
+import argparse
 import torch
-# Import UFLD model & config
 from ufld.model.model import parsingNet
 from ufld.utils.common import merge_config
 from model import faster_rcnn
 from get_video import run_video, run_video_file
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Inference script for lane detection and sign detection")
+    parser.add_argument("--video", type=str, required=True, help="Path to the input video file")
+    parser.add_argument("--output", type=str, required=True, help="Path to save the output video file")
+    return parser.parse_args()
+
 def main():
+    args = parse_args()
     # Load model
     sign_model = faster_rcnn(num_classes=43)  # GTSRB có 43 lớp
     device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -31,8 +38,8 @@ def main():
     run_video_file(
         detection_model=sign_model,
         lane_model=lane_model,
-        input_video_path="dataset/input.mp4",
-        output_video_path="output.mp4",
+        input_video_path=args.video,
+        output_video_path=args.output,
         device=device,    
     )
 

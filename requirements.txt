@@ -3,3 +3,5 @@ pycocotools
 tqdm
 opencv-python
 tensorflow
+torch==2.2.2+cu121
+torchvision==0.17.2+cu121
